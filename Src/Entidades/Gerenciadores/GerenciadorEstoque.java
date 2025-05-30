@@ -1,5 +1,5 @@
 package Src.Entidades.Gerenciadores;
 
-public class GerenciadorInstrutor {
+public class GerenciadorEstoque {
     
 }
