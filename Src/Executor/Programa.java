@@ -7,7 +7,8 @@ public class Programa {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         GerenciadorProdutos gerenciador = new GerenciadorProdutos();
-       
+        gerenciador.iniciarLista();
+        
        int Menu;
         do{
         
@@ -21,35 +22,25 @@ public class Programa {
         sc.nextLine();
         switch (Menu){
         case 1:
-            gerenciador.listarProdutos();
+            gerenciador.listarProdutos(); //tem q mandar isso pra classe produto, onde tem o print do array list
             break;
         case 2:
             gerenciador.adicionarProdutos();
             break;
-        case 3:
+        /*case 3:
             gerenciador.alterarProdutos();
             break;
         case 4:
             gerenciador.retirarProdutos();
-            break;
+            break;*/
         case 0:
             break;
         }
         }while (Menu != 0);
-
+        
     }
     
 }
- /*plano mental meu consagrado gugs. cadastrar um estoque de chapas de madeira com cores marcas diferentes, cada marca com suas cores diferentes
-  um sistema de pedidos dos clientes, pra sair a nota e ser pago no caixa. pedido inclui valor de chapa inteira e meia chapa.
-  um cadastro obvio nesse estoque pra fitas de borda das cores e marcas apresentadas pra caso cliente queira comprar fitada ou nao
-  listar todos esses itens pra apresentar ao cliente, e poder buscar o tipo de marca e cor das peças pras saber se ainda tem e so dar baixa na compra
-  listar registros é fogo mas a gente da um jeito. da pra ordenar por ID numerado em ordem crescente. é o jeito mais facil
-  fazer um menu com incluir alterar excluir listar e sair , basico de todo programa
-  quando iniciar a gente deixa pronto ja imbutido 7 objetos de cada classe
-  uma matriz pra alguma coisa, a gente ve isso ai
-  deixar tudo comentado!
- */
 
 
  /*ordem de venda - 
