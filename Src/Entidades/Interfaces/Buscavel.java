@@ -1,5 +1,8 @@
 package Src.Entidades.Interfaces;
 
-public class Buscavel {
-    
+/**
+ * Interface que define métodos para busca de objetos.
+ */
+public interface Buscavel {
+    boolean contemTermo(String termoBusca);
 }
