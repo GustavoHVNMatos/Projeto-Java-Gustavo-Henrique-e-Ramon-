@@ -2,7 +2,7 @@ package Src.Entidades.Classes_Cadastro_Madeireira;
 
 /**
  * Classe abstrata que representa um produto genérico da madeireira.
- * Serve como base para Madeira e Movel.
+ * Serve como base para Madeira.
  */
 public abstract class Produto implements Buscavel {
     protected int codigo;
