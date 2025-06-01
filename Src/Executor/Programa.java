@@ -11,7 +11,7 @@ public class Programa {
         
        int Menu;
         do{
-        
+        //menu interativo funcionando, ligado ao gerenciadorprodutos e ao produtos classes dai do lado
         System.out.println("Selecione o número correspondente ao que deseja!");
         System.out.println("1 - Listar Produtos Disponíveis");
         System.out.println("2 - Adicionar Produtos");
@@ -22,15 +22,17 @@ public class Programa {
         sc.nextLine();
         switch (Menu){
         case 1:
-            gerenciador.listarProdutos(); //tem q mandar isso pra classe produto, onde tem o print do array list
+            gerenciador.listarProdutos(); //isso aqui ta chamando funçao da lista la no produto
             break;
         case 2:
-            gerenciador.adicionarProdutos();
+            gerenciador.adicionarProdutos();// é o primeira coisa a se fazer antes de descomentaro case 3
             break;
-        /*case 3:
+            //quem for mexer nisso, preciso que faça essa funçao ser chamada no gerenciadorprodutos
+            //puxe a arraylist de tipos de madeira, nome no caso pra ser adicionada.
+        /*case 3: esse case antes de descomentar, tem q puxar as 3 arrays,e poder mudar uma delas, seja valor cor ou tipo d madeira
             gerenciador.alterarProdutos();
             break;
-        case 4:
+        case 4: e esse aqui ta intuitivo né
             gerenciador.retirarProdutos();
             break;*/
         case 0:

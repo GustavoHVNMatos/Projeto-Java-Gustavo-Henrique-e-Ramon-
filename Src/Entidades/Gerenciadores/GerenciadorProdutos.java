@@ -5,17 +5,17 @@ import Src.Entidades.Classes_Cadastro_Madeireira.Produto;
 
 public class GerenciadorProdutos {
     List<Produto> produtos = new ArrayList<>();
-
+    //cria uma lista
 
 
     public GerenciadorProdutos(){
 
-    }
+    }//construtor
     public void iniciarLista(){        
         String[] nomes = {"Jatobá", "Ipê", "Cerejeira", "Massaranduba", "MDF", "MDF Naval", "Pinho"};
         String[] cores = {"cobalto","branco","basalto-cinza","amadeirado","preto","rosê", "naosei"};
         Double[] precos = {1.00,2.00,3.00,4.00,5.00,6.00,7.00};
-        
+        //o iniciador de vetores com o tipo de madeira cor e preco
         for (int i = 0; i < 7; i++){
             Produto produto = new Produto(i + 1, nomes[i], cores[i], precos[i]);
             produtos.add(produto);
@@ -28,7 +28,7 @@ public class GerenciadorProdutos {
         for (Produto p : produtos) {
             System.out.println("- " + p.toString());
 
-
+            //printa a lista apenas
         }
     
        

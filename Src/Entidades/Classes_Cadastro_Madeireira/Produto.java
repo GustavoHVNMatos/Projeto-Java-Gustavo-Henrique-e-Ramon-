@@ -7,11 +7,11 @@ import Src.Entidades.Interfaces.Buscavel;
  */
 
  public class Produto{
-
+    //apenas definiçãos de variáveis
     protected String nome;
     protected double preco;
     protected String cores;
-
+    // atribuiçãos da classe
     public Produto(int ID, String nomes, String cores, double precos) {
         this.nome = nomes;
         this.preco = precos;
@@ -49,6 +49,7 @@ import Src.Entidades.Interfaces.Buscavel;
     @Override
     public String toString() {
         return "Cores: " + cores + ", Tipo de Madeira: " + nome + ", Preço: R$" + preco;
+        // o que vai ser printado apenas
     }
 
 
