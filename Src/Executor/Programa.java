@@ -22,26 +22,27 @@ public class Programa {
         sc.nextLine();
         switch (Menu){
         case 1:
-            gerenciador.listarProdutos(); //isso aqui ta chamando funçao da lista la no produto
+            gerenciador.listarProdutos();
             break;
         case 2:
-            gerenciador.adicionarProdutos();// é o primeira coisa a se fazer antes de descomentaro case 3
+            gerenciador.adicionarProdutos();
             break;
-            //quem for mexer nisso, preciso que faça essa funçao ser chamada no gerenciadorprodutos
-            //puxe a arraylist de tipos de madeira, nome no caso pra ser adicionada.
-        /*case 3: esse case antes de descomentar, tem q puxar as 3 arrays,e poder mudar uma delas, seja valor cor ou tipo d madeira
+        case 3: 
             gerenciador.alterarProdutos();
             break;
-        case 4: e esse aqui ta intuitivo né
+        case 4: 
             gerenciador.retirarProdutos();
-            break;*/
-        case 0:
             break;
+        case 0:
+            System.out.println("Saindo do sistema...");
+            break;
+        default:
+            System.out.println("Opção inválida!");
         }
         }while (Menu != 0);
-        
+        sc.close();
     }
-    
+
 }
 
 

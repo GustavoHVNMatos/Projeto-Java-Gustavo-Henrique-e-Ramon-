@@ -5,7 +5,10 @@ package Src.Entidades.Classes_Cadastro_Madeireira;
  * Herda da classe abstrata Produto.
  */
 public class Madeira extends Produto {
-    private String tipo;
+    public Madeira(int ID, String nome, String cor, double preco) {
+        super(ID, nome, cor, preco);
+    }
+    /*private String tipo;
     private double comprimento; // em metros
     private double espessura; // em centímetros
     private String qualidade; // A, B ou C
@@ -56,5 +59,6 @@ public class Madeira extends Produto {
     @Override
     public String toString() {
         return super.toString() + ", Tipo: " + tipo + ", Comprimento: " + comprimento + "m, Espessura: " + espessura + "cm";
-    }
+    }*/
+    
 }
