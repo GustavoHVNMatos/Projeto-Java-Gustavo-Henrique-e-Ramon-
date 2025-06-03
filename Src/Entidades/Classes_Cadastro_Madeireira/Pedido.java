@@ -8,7 +8,7 @@ import java.util.List;
  * Classe que representa um pedido de venda na madeireira.
  */
 public class Pedido {
-    private int numero;
+    private Integer numero;
     private Cliente cliente;
     private Date data;
     private List<ItemPedido> itens;

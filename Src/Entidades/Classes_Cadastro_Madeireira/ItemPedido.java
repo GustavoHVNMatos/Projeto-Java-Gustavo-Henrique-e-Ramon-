@@ -6,7 +6,7 @@ package Src.Entidades.Classes_Cadastro_Madeireira;
  */
 public class ItemPedido {
     private Produto produto;
-    private int quantidade;
+    private Integer quantidade;
     private double subtotal;
 
     public ItemPedido(Produto produto, int quantidade) {

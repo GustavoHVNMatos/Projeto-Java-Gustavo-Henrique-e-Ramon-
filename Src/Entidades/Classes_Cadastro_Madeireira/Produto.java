@@ -8,7 +8,7 @@ package Src.Entidades.Classes_Cadastro_Madeireira;
 
  public abstract class Produto {
     //apenas definiçãos de variáveis
-    protected int ID;
+    protected Integer ID;
     protected String nome;
     protected double preco;
     protected String cor;
