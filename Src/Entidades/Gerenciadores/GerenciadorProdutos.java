@@ -47,7 +47,12 @@ public class GerenciadorProdutos {
         double preco = scanner.nextDouble();
         scanner.nextLine();
 
-        int novoId = produtos.isEmpty() ? 1 : produtos.get(produtos.size()-1).getID() + 1;
+        int novoId;
+            if (produtos.size() == 0) {
+             novoId = 1;
+            } else {
+                novoId = produtos.get(produtos.size() - 1).getID() + 1;
+            }
         Produto novoProduto = new Madeira(novoId, nome, cor, preco);
         produtos.add(novoProduto);
         System.out.println("Produto adicionado com sucesso!");
@@ -87,18 +92,30 @@ public class GerenciadorProdutos {
     System.out.println("Produto não encontrado!");
 }
 
-    public void retirarProdutos() {
-        listarProdutos();
-        System.out.print("\nDigite o ID do produto a remover: ");
-        int id = scanner.nextInt();
-        scanner.nextLine();
+   public void retirarProdutos() {
+    listarProdutos(); // Exibe a lista antes da remoção
 
-        if (produtos.removeIf(produto -> produto.getID() == id)) {
-            System.out.println("Produto removido com sucesso!");
-        } else {
-            System.out.println("Produto não encontrado!");
+    System.out.print("\nDigite o ID do produto a remover: ");
+    int id = scanner.nextInt();
+    scanner.nextLine();
+
+    Produto produto = getById(id);
+    if (produto == null) {
+        System.out.println("Produto não encontrado!");
+    } else {
+        produtos.remove(produto);
+        System.out.println("Produto removido com sucesso!");
+    }
+}
+
+private Produto getById(int id) {
+    for (Produto p : produtos) {
+        if (p.getID() == id) {
+            return p;
         }
     }
+    return null;
+}
 
     /*private Produto buscarPorID(int id) {
         for (Produto p : produtos) {
