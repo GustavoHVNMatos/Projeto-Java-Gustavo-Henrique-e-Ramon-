@@ -72,12 +72,12 @@ public class GerenciadorProdutos {
             scanner.nextLine();
             
 
-            if (!novoNome.isEmpty()) {
-                produto.setNome(novoNome);
-            }
-            if (!novaCor.isEmpty()) {
-                produto.setCor(novaCor);
-            }
+            
+            produto.setNome(novoNome);
+        
+           
+            produto.setCor(novaCor);
+            
             produto.setPreco(novoPreco);
             
             System.out.println("Produto alterado com sucesso!");
