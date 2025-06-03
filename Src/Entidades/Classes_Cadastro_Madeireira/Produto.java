@@ -41,15 +41,11 @@ package Src.Entidades.Classes_Cadastro_Madeireira;
     }
     
     public void setNome(String nome) {
-        if (nome != null && !nome.trim().isEmpty()) {
-            this.nome = nome;
-        }
+            this.nome = nome;   
     }
 
     public void setCor(String cor) {
-        if (cor != null && !cor.trim().isEmpty()) {
             this.cor = cor;
-        }
     }
 
     public void setPreco(double preco) {

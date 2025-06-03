@@ -33,6 +33,10 @@ public class Programa {
         case 4: 
             gerenciador.retirarProdutos();
             break;
+        /*  case 5: 
+            gerenciador.efetuarPedido();
+            break;
+        */
         case 0:
             System.out.println("Saindo do sistema...");
             break;
@@ -44,14 +48,3 @@ public class Programa {
     }
 
 }
-
-
- /*ordem de venda - 
-    1 - menu
-    3 - gerenciar produtos nisso vai pra listagem de tipos de madeiras disponiveis. / eucalipto,jatobá,ipê, peroba-rosa,cerejeira, pinho, massaranduba
-    4 - na seleção disso, vai pra fornecedores que tem esse tipo disponivel
-    5 - depois disso vai pras cores que tem disponivel dessa madeira já com valores e a quantidade
-    6 - depois de selecionar, vai pro cadastro de clientesCNPJ, se nao tiver, cadastra novo
-    7 - depois disso vai pra aba de pedidos a serem entregues com id do pedido (4 a 6 digitos)
-    8 - depois de finalizado, volta pro menu.
-  */
