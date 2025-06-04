@@ -89,7 +89,7 @@ public class GerenciadorPedidos {
         }
         
         // Finalização do pedido
-        if(!carrinho.isEmpty()) {
+        if(carrinho.size() > 0) {
             System.out.println("\n=== RESUMO DO PEDIDO ===");
             for(Produto p : carrinho) {
                 System.out.println(p.toString());
