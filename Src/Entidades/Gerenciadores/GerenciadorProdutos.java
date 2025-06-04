@@ -116,6 +116,12 @@ private Produto getById(int id) {
     }
     return null;
 }
+public Produto getProdutoByIndex(int index) {
+    if(index >= 0 && index < produtos.size()) {
+        return produtos.get(index);
+    }
+    return null;
+}
 
     /*private Produto buscarPorID(int id) {
         for (Produto p : produtos) {
