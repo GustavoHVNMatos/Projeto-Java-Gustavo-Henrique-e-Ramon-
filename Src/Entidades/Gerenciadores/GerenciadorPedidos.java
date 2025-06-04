@@ -24,17 +24,12 @@ public class GerenciadorPedidos {
             System.out.println("5 - MDF");
             System.out.println("6 - MDF Naval");
             System.out.println("7 - Pinho");
-            System.out.println("8 - Finalizar Pedido");
-            System.out.println("9 - Cancelar");
+            System.out.println("8 - Cancelar");
             System.out.print("Opção: ");
             opcaoMadeira = sc.nextInt();
             sc.nextLine();
             
             if(opcaoMadeira == 8) {
-                continuar = false;
-                break;
-            }
-            if(opcaoMadeira == 9) {
                 carrinho.clear();
                 return;
             }
@@ -51,10 +46,16 @@ public class GerenciadorPedidos {
             System.out.println("4 - amadeirado");
             System.out.println("5 - preto");
             System.out.println("6 - rosê");
-            System.out.println("7 - naosei");
+            System.out.println("7 - avermelhado");
+            System.out.println("8 - Cancelar");
             System.out.print("Opção: ");
             opcaoCor = sc.nextInt();
             sc.nextLine();
+
+            if(opcaoCor == 8) {
+                carrinho.clear();
+                return;
+            }
             
             if(opcaoCor < 1 || opcaoCor > 7) {
                 System.out.println("Opção inválida!");
