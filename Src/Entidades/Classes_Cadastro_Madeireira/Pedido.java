@@ -5,7 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * Classe que representa um pedido de venda na madeireira.
+ * Classe que representa um pedido na madeireira
  */
 public class Pedido {
     private Integer numero;
@@ -13,48 +13,46 @@ public class Pedido {
     private Date data;
     private List<ItemPedido> itens;
     private double valorTotal;
-    private String status; // "Em aberto", "Finalizado", "Cancelado"
+    private StatusPedido status;
 
     public Pedido(int numero, Cliente cliente) {
         this.numero = numero;
         this.cliente = cliente;
-        this.data = new Date(); // Data atual
+        this.data = new Date();
         this.itens = new ArrayList<>();
         this.valorTotal = 0.0;
-        this.status = "Em aberto";
+        this.status = StatusPedido.EM_ABERTO;
     }
 
-    // Método para adicionar um item ao pedido
     public void adicionarItem(ItemPedido item) {
         itens.add(item);
         calcularTotal();
     }
 
-    // Método para remover um item do pedido
     public void removerItem(ItemPedido item) {
         itens.remove(item);
         calcularTotal();
     }
 
-    // Método para calcular o valor total do pedido
     private void calcularTotal() {
-        valorTotal = 0;
-        for (ItemPedido item : itens) {
-            valorTotal += item.getSubtotal();
-        }
+        valorTotal = itens.stream()
+                         .mapToDouble(ItemPedido::getSubtotal)
+                         .sum();
     }
 
-    // Método para finalizar o pedido
     public void finalizarPedido() {
-        this.status = "Finalizado";
+        this.status = StatusPedido.FINALIZADO;
     }
 
-    // Método para cancelar o pedido
     public void cancelarPedido() {
-        this.status = "Cancelado";
+        this.status = StatusPedido.CANCELADO;
     }
 
-    // Getters
+    // Getters atualizados...
+    public StatusPedido getStatus() {
+        return status;
+    }
+
     public int getNumero() {
         return numero;
     }
@@ -68,24 +66,47 @@ public class Pedido {
     }
 
     public List<ItemPedido> getItens() {
-        return new ArrayList<>(itens); // Retorna cópia para evitar modificações externas
+        return new ArrayList<>(itens);
     }
 
     public double getValorTotal() {
         return valorTotal;
     }
 
-    public String getStatus() {
-        return status;
+    public String getStatusString() {
+        return status.getDescricao();
+    }
+    
+
+    /**
+     * Retorna a data formatada resumida (DD/MM/AAAA)
+     */
+    public String getDataFormatada() {
+        return String.format("%td/%<tm/%<tY", data);
+    }
+
+    /**
+     * Retorna a quantidade total de itens no pedido
+     */
+    public int getQuantidadeItens() {
+        return itens.size();
+    }
+
+    /**
+     * Retorna o nome do cliente ou "Não informado" se for nulo
+     */
+    public String getNomeCliente() {
+        return cliente != null ? cliente.getNome() : "Não informado";
     }
 
     @Override
     public String toString() {
-        return "Pedido #" + numero + 
-               " - Cliente: " + cliente.getNome() +
-               " - Data: " + data +
-               " - Total: R$" + valorTotal +
-               " - Status: " + status +
-               "\nItens: " + itens.size();
+        return String.format("Pedido #%d - %s - %s - %d itens - R$%.2f - %s",
+            numero,
+            getDataFormatada(),
+            getNomeCliente(),
+            getQuantidadeItens(),
+            valorTotal,
+            status);
     }
 }

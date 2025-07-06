@@ -1,18 +1,14 @@
 package Src.Entidades.Classes_Cadastro_Madeireira;
-/*import Src.Entidades.Interfaces.Buscavel;*/
 
 /**
- * Classe abstrata que representa um produto genérico da madeireira.
- * Serve como base para Madeira.
+ * Classe abstrata que representa um produto genérico da madeireira
  */
-
- public abstract class Produto {
-    //apenas definiçãos de variáveis
+public abstract class Produto implements Comparable<Produto> {
     protected Integer ID;
     protected String nome;
     protected double preco;
     protected String cor;
-    // atribuiçãos da classe
+
     public Produto(int ID, String nome, String cor, double preco) {
         this.ID = ID;
         this.nome = nome;
@@ -20,11 +16,21 @@ package Src.Entidades.Classes_Cadastro_Madeireira;
         this.preco = preco;
     }
 
-    // Método abstrato que será implementado pelas subclasses
-   /*public abstract double calcularPreco();*/
+    /**
+     * Método abstrato para cálculo de preço
+     */
+    public abstract double calcularPreco();
+
+    /**
+     * Implementação da interface Comparable
+     */
+    @Override
+    public int compareTo(Produto outro) {
+        return Double.compare(this.calcularPreco(), outro.calcularPreco());
+    }
 
     // Getters e Setters
-      public int getID() {
+    public int getID() {
         return ID;
     }
 
@@ -41,11 +47,11 @@ package Src.Entidades.Classes_Cadastro_Madeireira;
     }
     
     public void setNome(String nome) {
-            this.nome = nome;   
+        this.nome = nome;   
     }
 
     public void setCor(String cor) {
-            this.cor = cor;
+        this.cor = cor;
     }
 
     public void setPreco(double preco) {
@@ -56,13 +62,6 @@ package Src.Entidades.Classes_Cadastro_Madeireira;
 
     @Override
     public String toString() {
-        return String.format("ID: %d, Nome: %s, Cor: %s, Preço: R$%.2f", ID, nome, cor, preco);
+        return String.format("ID: %d, Nome: %s, Cor: %s, Preço: R$%.2f", ID, nome, cor, calcularPreco());
     }
-        // o que vai ser printado apenas
-    
- /*@Override
-    public boolean contemTermo(String termoBusca) {
-        return nome.toLowerCase().contains(termoBusca.toLowerCase()) ||
-               cores.toLowerCase().contains(termoBusca.toLowerCase());
-    }*/
 }

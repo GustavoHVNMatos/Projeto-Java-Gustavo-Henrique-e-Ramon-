@@ -1,8 +1,10 @@
 package Src.Entidades.Gerenciadores;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
 
+import Src.Entidades.Classes_Cadastro_Madeireira.Ferragem;
 import Src.Entidades.Classes_Cadastro_Madeireira.Madeira;
 import Src.Entidades.Classes_Cadastro_Madeireira.Produto;
 
@@ -14,28 +16,63 @@ public class GerenciadorProdutos {
     public GerenciadorProdutos(){
 
     }//construtor
-    public void iniciarLista(){        
-        String[] nomes = {"Jatobá", "Ipê", "Cerejeira", "Massaranduba", "MDF", "MDF Naval", "Pinho"};
-        String[] cores = {"cobalto","branco","basalto-cinza","amadeirado","preto","rosê", "avermelhado"};
-        Double[] precos = {1.00,2.00,3.00,4.00,5.00,6.00,7.00};
-        //o iniciador de vetores com o tipo de madeira cor e preco
-        for (int i = 0; i < nomes.length; i++) {
-            Madeira madeira = new Madeira(i+1, nomes[i], cores[i], precos[i]);
-            produtos.add(madeira);
-            //nome, cor, preco
-        }
-        }
+    public void iniciarLista() {        
+        String[] nomesMadeira = {"Jatobá", "Ipê", "Cerejeira", "Massaranduba", "MDF", "MDF Naval", "Pinho"};
+        String[] coresMadeira = {"cobalto","branco","basalto-cinza","amadeirado","preto","rosê", "avermelhado"};
+        Double[] precosMadeira = {1.00, 2.00, 3.00, 4.00, 5.00, 6.00, 7.00};
+        
+        String[] nomesFerragem = {"Parafuso 5mm", "Prego 3mm", "Dobradiça", "Fechadura", "Haste Metálica"};
+        String[] coresFerragem = {"prata", "dourado", "preto", "prata", "cinza"};
+        String[] metais = {"Aço", "Ferro", "Alumínio", "Latão", "Aço Inox"};
+        Double[] precosFerragem = {0.5, 0.3, 2.5, 8.0, 4.0};
 
-       public void listarProdutos() {
-        System.out.println("Lista de Produtos Cadastrados:");
-        for (Produto produto : produtos) {
-            System.out.println("- " + produto.toString());
+        // Adiciona madeiras
+        for (int i = 0; i < nomesMadeira.length; i++) {
+            produtos.add(new Madeira(i+1, nomesMadeira[i], coresMadeira[i], precosMadeira[i]));
         }
-    
-            //printa a lista apenas
+        
+        // Adiciona ferragens (começando do ID 8)
+        for (int i = 0; i < nomesFerragem.length; i++) {
+            produtos.add(new Ferragem(
+                nomesMadeira.length + i + 1,
+                nomesFerragem[i],
+                coresFerragem[i],
+                precosFerragem[i],
+                metais[i]
+            ));
+        }
     }
-   
+
+    public void listarProdutos() {
+        System.out.println("\n=== LISTA DE PRODUTOS ===");
+        System.out.println("+-----+---------------------+-----------------+------------+");
+        System.out.println("| ID  | Nome                | Cor             | Preço      |");
+        System.out.println("+-----+---------------------+-----------------+------------+");
+        
+        for (Produto produto : produtos) {
+            String nomeExibicao = produto.getNome();
+            if (nomeExibicao.length() > 18) {
+                nomeExibicao = nomeExibicao.substring(0, 15) + "...";
+            }
+            
+            System.out.printf("| %-3d | %-19s | %-15s | R$%8.2f |\n",
+                produto.getID(),
+                nomeExibicao,
+                produto.getCor(),
+                produto.calcularPreco()); // Mostra o preço calculado
+        }
+        
+        System.out.println("+-----+---------------------+-----------------+------------+");
+    }
+
     public void adicionarProdutos() {
+        System.out.println("\n=== TIPO DE PRODUTO ===");
+        System.out.println("1 - Madeira");
+        System.out.println("2 - Ferragem");
+        System.out.print("Opção: ");
+        int tipo = scanner.nextInt();
+        scanner.nextLine();
+        
         System.out.println("\nDigite os dados do novo produto:");
         System.out.print("Nome: ");
         String nome = scanner.nextLine();
@@ -47,13 +84,17 @@ public class GerenciadorProdutos {
         double preco = scanner.nextDouble();
         scanner.nextLine();
 
-        int novoId;
-            if (produtos.size() == 0) {
-             novoId = 1;
-            } else {
-                novoId = produtos.get(produtos.size() - 1).getID() + 1;
-            }
-        Produto novoProduto = new Madeira(novoId, nome, cor, preco);
+        int novoId = produtos.isEmpty() ? 1 : produtos.get(produtos.size() - 1).getID() + 1;
+        Produto novoProduto;
+        
+        if (tipo == 2) {
+            System.out.print("Tipo de Metal: ");
+            String metal = scanner.nextLine();
+            novoProduto = new Ferragem(novoId, nome, cor, preco, metal);
+        } else {
+            novoProduto = new Madeira(novoId, nome, cor, preco);
+        }
+        
         produtos.add(novoProduto);
         System.out.println("Produto adicionado com sucesso!");
     }
@@ -108,6 +149,58 @@ public class GerenciadorProdutos {
     }
 }
 
+    public void buscarProduto() {
+        System.out.print("\nDigite o termo de busca (nome ou cor): ");
+        String termo = scanner.nextLine();
+        
+        System.out.println("\n=== RESULTADOS DA BUSCA ===");
+        System.out.println("+-----+-----------------+-----------------+---------+");
+        System.out.println("| ID  | Nome            | Cor             | Preço   |");
+        System.out.println("+-----+-----------------+-----------------+---------+");
+        
+        boolean encontrado = false;
+        for (Produto p : produtos) {
+            if (p.getNome().toLowerCase().contains(termo.toLowerCase()) || 
+                p.getCor().toLowerCase().contains(termo.toLowerCase())) {
+                System.out.printf("| %3d | %-15s | %-15s | R$%5.2f |\n",
+                    p.getID(), p.getNome(), p.getCor(), p.getPreco());
+                encontrado = true;
+            }
+        }
+        
+        System.out.println("+-----+-----------------+-----------------+---------+");
+        if (!encontrado) {
+            System.out.println("Nenhum produto encontrado com: " + termo);
+        }
+    }
+
+    public void ordenarProdutos() {
+        System.out.println("\nOrdenar por:");
+        System.out.println("1 - Nome (A-Z)");
+        System.out.println("2 - Preço Final (Menor-Maior)");
+        System.out.println("3 - ID (Ordem Original)");
+        System.out.print("Opção: ");
+        int opcao = scanner.nextInt();
+        scanner.nextLine();
+        
+        switch(opcao) {
+            case 1:
+                Collections.sort(produtos, (p1, p2) -> p1.getNome().compareToIgnoreCase(p2.getNome()));
+                break;
+            case 2:
+                Collections.sort(produtos); // Usa o compareTo de Produto
+                break;
+            case 3:
+                Collections.sort(produtos, (p1, p2) -> Integer.compare(p1.getID(), p2.getID()));
+                break;
+            default:
+                System.out.println("Opção inválida!");
+                return;
+        }
+        
+        System.out.println("Produtos ordenados com sucesso!");
+        listarProdutos();
+    }
 private Produto getById(int id) {
     for (Produto p : produtos) {
         if (p.getID() == id) {
@@ -122,15 +215,6 @@ public Produto getProdutoByIndex(int index) {
     }
     return null;
 }
-
-    /*private Produto buscarPorID(int id) {
-        for (Produto p : produtos) {
-            if (p.getID() == id) {
-                return p;
-            }
-        }
-        return null;
-    } */
 }
 
 
