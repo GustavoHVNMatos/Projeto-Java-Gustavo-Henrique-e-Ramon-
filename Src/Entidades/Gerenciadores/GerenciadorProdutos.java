@@ -9,75 +9,85 @@ import Src.Entidades.Classes_Cadastro_Madeireira.Ferragem;
 import Src.Entidades.Classes_Cadastro_Madeireira.Madeira;
 import Src.Entidades.Classes_Cadastro_Madeireira.Produto;
 
+/**
+ * Classe responsável por gerenciar todas as operações relacionadas a produtos.
+ * Implementa CRUD completo para produtos, além de busca e ordenação.
+ */
 public class GerenciadorProdutos {
     private List<Produto> produtos = new ArrayList<>();
     private Scanner scanner = new Scanner(System.in);
 
-    public GerenciadorProdutos() {}
-
+    /**
+     * Inicializa a lista com produtos de teste (madeiras e ferragens)
+     */
     public void iniciarLista() {
         String[] nomesMadeira = {
-            "Jatobá", "Ipê", "Cerejeira", "Massaranduba", 
-            "MDF", "MDF Naval", "Pinho", "Eucalipto", "Cedro"
+                "Jatobá", "Ipê", "Cerejeira", "Massaranduba",
+                "MDF", "MDF Naval", "Pinho", "Eucalipto", "Cedro"
         };
         String[] coresMadeira = {
-            "cobalto", "branco", "basalto-cinza", "amadeirado", 
-            "preto", "rosê", "avermelhado", "natural", "envernizado"
+                "cobalto", "branco", "basalto-cinza", "amadeirado",
+                "preto", "rosê", "avermelhado", "natural", "envernizado"
         };
-        Double[] precosMadeira = {1.00, 2.00, 3.00, 4.00, 5.00, 6.00, 7.00, 8.00, 9.00};
-        
+        Double[] precosMadeira = { 1.00, 2.00, 3.00, 4.00, 5.00, 6.00, 7.00, 8.00, 9.00 };
+
         String[] nomesFerragem = {
-            "Parafuso 5mm", "Prego 3mm", "Dobradiça", "Fechadura", 
-            "Haste Metálica", "Pregador", "Parafuso 10mm", "Arruela", "Porca"
+                "Parafuso 5mm", "Prego 3mm", "Dobradiça", "Fechadura",
+                "Haste Metálica", "Pregador", "Parafuso 10mm", "Arruela", "Porca"
         };
         String[] coresFerragem = {
-            "prata", "dourado", "preto", "prata", 
-            "cinza", "bronze", "cobre", "latão", "inox"
+                "prata", "dourado", "preto", "prata",
+                "cinza", "bronze", "cobre", "latão", "inox"
         };
         String[] metais = {
-            "Aço", "Ferro", "Alumínio", "Latão", 
-            "Aço Inox", "Bronze", "Cobre", "Metalon", "Zinco"
+                "Aço", "Ferro", "Alumínio", "Latão",
+                "Aço Inox", "Bronze", "Cobre", "Metalon", "Zinco"
         };
-        Double[] precosFerragem = {0.5, 0.3, 2.5, 8.0, 4.0, 3.5, 1.0, 0.8, 1.2};
+        Double[] precosFerragem = { 0.5, 0.3, 2.5, 8.0, 4.0, 3.5, 1.0, 0.8, 1.2 };
 
         // Adiciona madeiras
         for (int i = 0; i < nomesMadeira.length; i++) {
             produtos.add(new Madeira(i + 1, nomesMadeira[i], coresMadeira[i], precosMadeira[i]));
         }
-        
+
         // Adiciona ferragens (IDs a partir de 10)
         for (int i = 0; i < nomesFerragem.length; i++) {
             produtos.add(new Ferragem(
-                nomesMadeira.length + i + 1,
-                nomesFerragem[i],
-                coresFerragem[i],
-                precosFerragem[i],
-                metais[i]
-            ));
+                    nomesMadeira.length + i + 1,
+                    nomesFerragem[i],
+                    coresFerragem[i],
+                    precosFerragem[i],
+                    metais[i]));
         }
     }
 
+    /**
+     * Lista todos os produtos em formato tabular
+     */
     public void listarProdutos() {
         System.out.println("\n=== LISTA DE PRODUTOS ===");
         System.out.println("+-----+---------------------+-----------------+------------+");
         System.out.println("| ID  | Nome                | Cor             | Preço      |");
         System.out.println("+-----+---------------------+-----------------+------------+");
-        
+
         for (Produto produto : produtos) {
             String nomeExibicao = produto.getNome();
             if (nomeExibicao.length() > 18) {
                 nomeExibicao = nomeExibicao.substring(0, 15) + "...";
             }
-            
+
             System.out.printf("| %-3d | %-19s | %-15s | R$%8.2f |\n",
-                produto.getID(),
-                nomeExibicao,
-                produto.getCor(),
-                produto.calcularPreco());
+                    produto.getID(),
+                    nomeExibicao,
+                    produto.getCor(),
+                    produto.calcularPreco());
         }
         System.out.println("+-----+---------------------+-----------------+------------+");
     }
 
+    /**
+     * Adiciona um novo produto a partir de entrada do usuário
+     */
     public void adicionarProdutos() {
         System.out.println("\n=== TIPO DE PRODUTO ===");
         System.out.println("1 - Madeira");
@@ -85,19 +95,19 @@ public class GerenciadorProdutos {
         System.out.print("Opção: ");
         int tipo = scanner.nextInt();
         scanner.nextLine();
-        
+
         System.out.print("Nome: ");
         String nome = scanner.nextLine();
-        
+
         System.out.print("Cor: ");
         String cor = scanner.nextLine();
-        
+
         System.out.print("Preço: ");
         double preco = scanner.nextDouble();
         scanner.nextLine();
 
         int novoId = produtos.get(produtos.size() - 1).getID() + 1;
-        
+
         if (tipo == 2) {
             System.out.print("Tipo de Metal: ");
             String metal = scanner.nextLine();
@@ -108,6 +118,9 @@ public class GerenciadorProdutos {
         System.out.println("Produto adicionado!");
     }
 
+    /**
+     * Altera os dados de um produto existente
+     */
     public void alterarProdutos() {
         listarProdutos();
         System.out.print("\nID do produto a alterar: ");
@@ -118,14 +131,14 @@ public class GerenciadorProdutos {
             if (produto.getID() == id) {
                 System.out.print("Novo nome (" + produto.getNome() + "): ");
                 produto.setNome(scanner.nextLine());
-                
+
                 System.out.print("Nova cor (" + produto.getCor() + "): ");
                 produto.setCor(scanner.nextLine());
-                
+
                 System.out.print("Novo preço (" + produto.getPreco() + "): ");
                 produto.setPreco(scanner.nextDouble());
                 scanner.nextLine();
-                
+
                 System.out.println("Produto atualizado!");
                 return;
             }
@@ -133,6 +146,9 @@ public class GerenciadorProdutos {
         System.out.println("ID não encontrado!");
     }
 
+    /**
+     * Remove um produto da lista
+     */
     public void retirarProdutos() {
         listarProdutos();
         System.out.print("\nID do produto a remover: ");
@@ -149,26 +165,32 @@ public class GerenciadorProdutos {
         System.out.println("ID não encontrado!");
     }
 
+    /**
+     * Busca produtos por termo (nome ou cor)
+     */
     public void buscarProduto() {
         System.out.print("\nTermo de busca (nome/cor): ");
         String termo = scanner.nextLine().toLowerCase();
-        
+
         System.out.println("\n=== RESULTADOS ===");
         boolean encontrado = false;
-        
+
         for (Produto p : produtos) {
             if (p.getNome().toLowerCase().contains(termo) || p.getCor().toLowerCase().contains(termo)) {
                 System.out.printf("ID: %d | Nome: %s | Cor: %s | Preço: R$%.2f\n",
-                    p.getID(), p.getNome(), p.getCor(), p.calcularPreco());
+                        p.getID(), p.getNome(), p.getCor(), p.calcularPreco());
                 encontrado = true;
             }
         }
-        
+
         if (!encontrado) {
             System.out.println("Nenhum produto encontrado.");
         }
     }
 
+    /**
+     * Ordena os produtos por diferentes critérios
+     */
     public void ordenarProdutos() {
         System.out.println("\nOrdenar por:");
         System.out.println("1 - Nome (A-Z)");
@@ -192,6 +214,12 @@ public class GerenciadorProdutos {
         listarProdutos();
     }
 
+    /**
+     * Obtém um produto pelo índice na lista
+     * 
+     * @param index Posição do produto na lista (0-based)
+     * @return Produto encontrado ou null se índice inválido
+     */
     public Produto getProdutoByIndex(int index) {
         if (index >= 0 && index < produtos.size()) {
             return produtos.get(index);

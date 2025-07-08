@@ -1,23 +1,39 @@
 package Src.Executor;
-import java.util.Scanner;
 
+import java.util.Scanner;
 import Src.Entidades.Gerenciadores.GerenciadorPedidos;
 import Src.Entidades.Gerenciadores.GerenciadorProdutos;
 import Src.Entidades.Classes_Cadastro_Madeireira.Cliente;
 import Src.Entidades.Gerenciadores.GerenciadorClientes;
 
-
+/**
+ * Classe principal do Sistema de Gerenciamento da Madeireira.
+ * Responsável por iniciar a aplicação, exibir menus e coordenar as operações
+ * entre os diferentes gerenciadores (Produtos, Pedidos e Clientes).
+ * 
+ * Implementa o padrão de projeto Facade, fornecendo uma interface simplificada
+ * para o sistema complexo composto pelos diversos gerenciadores.
+ */
 public class Programa {
+
+    /**
+     * Método principal que inicia a execução do programa.
+     * Cria as instâncias dos gerenciadores e inicia o menu principal.
+     * 
+     * @param args Argumentos de linha de comando (não utilizados neste sistema)
+     */
     public static void main(String[] args) {
+        // Inicializa os componentes principais do sistema
         Scanner sc = new Scanner(System.in);
         GerenciadorProdutos gerenciadorProdutos = new GerenciadorProdutos();
         GerenciadorPedidos gerenciadorPedidos = new GerenciadorPedidos();
         GerenciadorClientes gerenciadorClientes = new GerenciadorClientes();
-        
-        // Inicializa dados de teste
+
+        // Carrega dados iniciais para demonstração (requisito 8)
         gerenciadorProdutos.iniciarLista();
         gerenciadorClientes.iniciarClientesTeste();
-        
+
+        // Exibe o menu principal em loop até que o usuário escolha sair
         int opcao;
         do {
             System.out.println("\n=== SISTEMA MADEIREIRA ===");
@@ -28,8 +44,9 @@ public class Programa {
             System.out.print("Opção: ");
             opcao = sc.nextInt();
             sc.nextLine();
-            
-            switch(opcao) {
+
+            // Encaminha para o submenu correspondente à opção selecionada
+            switch (opcao) {
                 case 1:
                     menuProdutos(gerenciadorProdutos, sc);
                     break;
@@ -39,11 +56,25 @@ public class Programa {
                 case 3:
                     menuClientes(gerenciadorClientes, sc);
                     break;
+                case 0:
+                    System.out.println("Encerrando o sistema...");
+                    break;
+                default:
+                    System.out.println("Opção inválida!");
             }
-        } while(opcao != 0);
+        } while (opcao != 0);
+
+        // Libera recursos do scanner antes de encerrar
         sc.close();
     }
-    
+
+    /**
+     * Exibe e gerencia o menu de operações para clientes.
+     * Permite cadastrar, listar, buscar e filtrar clientes.
+     * 
+     * @param gerenciador Referência ao gerenciador de clientes
+     * @param sc          Scanner para entrada de dados do usuário
+     */
     private static void menuClientes(GerenciadorClientes gerenciador, Scanner sc) {
         int opcao;
         do {
@@ -57,8 +88,8 @@ public class Programa {
             System.out.print("Opção: ");
             opcao = sc.nextInt();
             sc.nextLine();
-            
-            switch(opcao) {
+
+            switch (opcao) {
                 case 1:
                     gerenciador.cadastrarCliente();
                     break;
@@ -76,10 +107,22 @@ public class Programa {
                     String doc = sc.nextLine();
                     gerenciador.buscarPorDocumento(doc);
                     break;
+                case 0:
+                    System.out.println("Retornando ao menu principal...");
+                    break;
+                default:
+                    System.out.println("Opção inválida!");
             }
-        } while(opcao != 0);
+        } while (opcao != 0);
     }
-    
+
+    /**
+     * Exibe e gerencia o menu de operações para produtos.
+     * Permite listar, adicionar, alterar, remover, buscar e ordenar produtos.
+     * 
+     * @param gerenciador Referência ao gerenciador de produtos
+     * @param sc          Scanner para entrada de dados do usuário
+     */
     private static void menuProdutos(GerenciadorProdutos gerenciador, Scanner sc) {
         int opcao;
         do {
@@ -94,8 +137,8 @@ public class Programa {
             System.out.print("Opção: ");
             opcao = sc.nextInt();
             sc.nextLine();
-            
-            switch(opcao) {
+
+            switch (opcao) {
                 case 1:
                     gerenciador.listarProdutos();
                     break;
@@ -114,33 +157,56 @@ public class Programa {
                 case 6:
                     gerenciador.ordenarProdutos();
                     break;
+                case 0:
+                    System.out.println("Retornando ao menu principal...");
+                    break;
+                default:
+                    System.out.println("Opção inválida!");
             }
-        } while(opcao != 0);
+        } while (opcao != 0);
     }
-    
-    private static void menuPedidos(GerenciadorPedidos gerenciador, GerenciadorProdutos gerenProd,GerenciadorClientes gerenClientes, Scanner sc) {
+
+    /**
+     * Exibe e gerencia o menu de operações para pedidos.
+     * Permite efetuar novos pedidos, listar pedidos existentes e cancelar pedidos.
+     * 
+     * @param gerenciador   Referência ao gerenciador de pedidos
+     * @param gerenProd     Referência ao gerenciador de produtos para seleção de
+     *                      itens
+     * @param gerenClientes Referência ao gerenciador de clientes para associação
+     * @param sc            Scanner para entrada de dados do usuário
+     */
+    private static void menuPedidos(GerenciadorPedidos gerenciador,
+            GerenciadorProdutos gerenProd,
+            GerenciadorClientes gerenClientes,
+            Scanner sc) {
         int opcao;
-    do {
-        System.out.println("\n=== MENU PEDIDOS ===");
-        System.out.println("1 - Efetuar Pedido");
-        System.out.println("2 - Listar Pedidos");
-        System.out.println("3 - Cancelar Pedido");
-        System.out.println("0 - Voltar");
-        System.out.print("Opção: ");
-        opcao = sc.nextInt();
-        sc.nextLine();
-        
-        switch(opcao) {
-            case 1:
-                gerenciador.efetuarPedido(gerenProd, gerenClientes);
-                break;
-            case 2:
-                gerenciador.listarPedidos(); // Mostra apenas não-cancelados
-                break;
-            case 3:
-                gerenciador.cancelarPedido();
-                break;
-        }
-    } while(opcao != 0);
-}
+        do {
+            System.out.println("\n=== MENU PEDIDOS ===");
+            System.out.println("1 - Efetuar Pedido");
+            System.out.println("2 - Listar Pedidos");
+            System.out.println("3 - Cancelar Pedido");
+            System.out.println("0 - Voltar");
+            System.out.print("Opção: ");
+            opcao = sc.nextInt();
+            sc.nextLine();
+
+            switch (opcao) {
+                case 1:
+                    gerenciador.efetuarPedido(gerenProd, gerenClientes);
+                    break;
+                case 2:
+                    gerenciador.listarPedidos();
+                    break;
+                case 3:
+                    gerenciador.cancelarPedido();
+                    break;
+                case 0:
+                    System.out.println("Retornando ao menu principal...");
+                    break;
+                default:
+                    System.out.println("Opção inválida!");
+            }
+        } while (opcao != 0);
+    }
 }
