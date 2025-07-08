@@ -44,12 +44,21 @@ public class Cliente {
     public String getEndereco() { return endereco; }
 
     public String getDocumentoFormatado() {
-        if (tipo == TipoCliente.PF) {
-            return documento.replaceAll("(\\d{3})(\\d{3})(\\d{3})(\\d{2})", "$1.$2.$3-$4");
-        } else {
-            return documento.replaceAll("(\\d{2})(\\d{3})(\\d{3})(\\d{4})(\\d{2})", "$1.$2.$3/$4-$5");
-        }
+    if (tipo == TipoCliente.PF) {
+        // Formata CPF exemplo: 123.456.789-01
+        return documento.substring(0, 3) + "." + 
+               documento.substring(3, 6) + "." + 
+               documento.substring(6, 9) + "-" + 
+               documento.substring(9);
+    } else {
+        // Formata CNPJ exemplo: 12.345.678/0001-99
+        return documento.substring(0, 2) + "." + 
+               documento.substring(2, 5) + "." + 
+               documento.substring(5, 8) + "/" + 
+               documento.substring(8, 12) + "-" + 
+               documento.substring(12);
     }
+}
 
     // Setters
     public void setNome(String nome) { this.nome = nome; }

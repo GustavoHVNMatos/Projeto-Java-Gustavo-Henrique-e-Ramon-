@@ -3,37 +3,17 @@ package Src.Entidades.Gerenciadores;
 import Src.Entidades.Classes_Cadastro_Madeireira.Cliente;
 import Src.Entidades.Classes_Cadastro_Madeireira.Pedido;
 import Src.Entidades.Classes_Cadastro_Madeireira.Produto;
+import Src.Entidades.Classes_Cadastro_Madeireira.ItemPedido; // Importação adicionada
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 public class GerenciadorPedidos {
     private List<Pedido> pedidos = new ArrayList<>();
-    private List<ItemPedido> carrinho = new ArrayList<>();
+    private List<ItemPedido> carrinho = new ArrayList<>(); // Agora usando a classe externa ItemPedido
     private Scanner sc = new Scanner(System.in);
 
-    private class ItemPedido {
-        private Produto produto;
-        private int quantidade;
-        private String corSelecionada;
-        private String metalSelecionado; // Apenas para ferragens
-
-        public ItemPedido(Produto produto, int quantidade, String corSelecionada, String metalSelecionado) {
-            this.produto = produto;
-            this.quantidade = quantidade;
-            this.corSelecionada = corSelecionada;
-            this.metalSelecionado = metalSelecionado;
-        }
-
-        public double getSubtotal() {
-            return produto.calcularPreco() * quantidade;
-        }
-
-        public Produto getProduto() { return produto; }
-        public int getQuantidade() { return quantidade; }
-        public String getCorSelecionada() { return corSelecionada; }
-        public String getMetalSelecionado() { return metalSelecionado; }
-    }
+    // Removida a classe interna ItemPedido (unificada com a externa)
 
     public void efetuarPedido(GerenciadorProdutos gerenciadorProdutos, GerenciadorClientes gerenciadorClientes) {
         boolean continuar = true;
@@ -56,15 +36,9 @@ public class GerenciadorPedidos {
             }
             
             switch(tipoProduto) {
-                case 1:
-                    adicionarMadeira(gerenciadorProdutos);
-                    break;
-                case 2:
-                    adicionarFerragem(gerenciadorProdutos);
-                    break;
-                default:
-                    System.out.println("Opção inválida!");
-                    continue;
+                case 1: adicionarMadeira(gerenciadorProdutos); break;
+                case 2: adicionarFerragem(gerenciadorProdutos); break;
+                default: System.out.println("Opção inválida!");
             }
             
             System.out.print("\nDeseja adicionar mais produtos? (S/N): ");
@@ -77,7 +51,6 @@ public class GerenciadorPedidos {
     }
     
     private void adicionarMadeira(GerenciadorProdutos gerenciadorProdutos) {
-        // Menu de madeiras
         System.out.println("\n=== ESCOLHA A MADEIRA ===");
         System.out.println("1 - Jatobá");
         System.out.println("2 - Ipê");
@@ -97,7 +70,6 @@ public class GerenciadorPedidos {
             return;
         }
         
-        // Menu de cores para madeiras
         System.out.println("\n=== ESCOLHA A COR ===");
         System.out.println("1 - cobalto");
         System.out.println("2 - branco");
@@ -117,7 +89,6 @@ public class GerenciadorPedidos {
             return;
         }
         
-        // Quantidade de chapas
         System.out.print("\nQuantidade de chapas: ");
         int quantidade = sc.nextInt();
         sc.nextLine();
@@ -127,11 +98,10 @@ public class GerenciadorPedidos {
             return;
         }
         
-        // Adiciona ao carrinho
         Produto produtoSelecionado = gerenciadorProdutos.getProdutoByIndex(opcaoMadeira-1);
         if(produtoSelecionado != null) {
             String corSelecionada = getCorMadeiraByIndex(opcaoCor-1);
-            carrinho.add(new ItemPedido(produtoSelecionado, quantidade, corSelecionada, null));
+            carrinho.add(new ItemPedido(produtoSelecionado, quantidade)); // Uso da classe externa
             
             System.out.println("\n=== ITEM ADICIONADO ===");
             System.out.println("Produto: " + produtoSelecionado.getNome());
@@ -142,7 +112,6 @@ public class GerenciadorPedidos {
     }
     
     private void adicionarFerragem(GerenciadorProdutos gerenciadorProdutos) {
-        // Menu de ferragens
         System.out.println("\n=== ESCOLHA A FERRAGEM ===");
         System.out.println("1 - Parafuso 5mm");
         System.out.println("2 - Prego 3mm");
@@ -160,7 +129,6 @@ public class GerenciadorPedidos {
             return;
         }
         
-        // Menu de cores para ferragens
         System.out.println("\n=== ESCOLHA A COR DA FERRAGEM ===");
         System.out.println("1 - prata");
         System.out.println("2 - dourado");
@@ -178,7 +146,6 @@ public class GerenciadorPedidos {
             return;
         }
         
-        // Menu de metais para ferragens
         System.out.println("\n=== ESCOLHA O METAL ===");
         System.out.println("1 - Aço");
         System.out.println("2 - Ferro");
@@ -196,7 +163,6 @@ public class GerenciadorPedidos {
             return;
         }
         
-        // Quantidade de unidades
         System.out.print("\nQuantidade de unidades: ");
         int quantidade = sc.nextInt();
         sc.nextLine();
@@ -206,12 +172,11 @@ public class GerenciadorPedidos {
             return;
         }
         
-        // Adiciona ao carrinho (ferragens estão a partir do índice 7 no gerenciador)
         Produto produtoSelecionado = gerenciadorProdutos.getProdutoByIndex(opcaoFerragem+6);
         if(produtoSelecionado != null) {
             String corSelecionada = getCorFerragemByIndex(opcaoCorFerragem-1);
             String metalSelecionado = getMetalByIndex(opcaoMetal-1);
-            carrinho.add(new ItemPedido(produtoSelecionado, quantidade, corSelecionada, metalSelecionado));
+            carrinho.add(new ItemPedido(produtoSelecionado, quantidade)); // Uso da classe externa
             
             System.out.println("\n=== ITEM ADICIONADO ===");
             System.out.println("Produto: " + produtoSelecionado.getNome());
@@ -221,6 +186,32 @@ public class GerenciadorPedidos {
             System.out.printf("Subtotal: R$%.2f\n", produtoSelecionado.calcularPreco() * quantidade);
         }
     }
+
+    public void exibirResumoPedido() {
+    if (carrinho.size() == 0) {  // Verifica se o carrinho está vazio usando size() == 0
+        System.out.println("\nCarrinho vazio!");
+        return;
+    }
+    
+    System.out.println("\n=== RESUMO DO PEDIDO ===");
+    double total = 0;
+    
+    for (int i = 0; i < carrinho.size(); i++) {  // Usando loop tradicional com índice
+        ItemPedido item = carrinho.get(i);
+        Produto produto = item.getProduto();
+        int quantidade = item.getQuantidade();
+        double subtotal = produto.calcularPreco() * quantidade;
+        
+        System.out.printf("- %s (Qtd: %d) - R$%.2f\n",
+            produto.getNome(),
+            quantidade,
+            subtotal);
+        total += subtotal;
+    }
+    
+    System.out.println("----------------------");
+    System.out.printf("TOTAL: R$%.2f\n", total);
+}
     
     private void finalizarPedido(GerenciadorClientes gerenciadorClientes) {
         exibirResumoPedido();
@@ -236,12 +227,7 @@ public class GerenciadorPedidos {
         Pedido novoPedido = new Pedido(pedidos.size() + 1, cliente);
         
         for (ItemPedido item : carrinho) {
-            Src.Entidades.Classes_Cadastro_Madeireira.ItemPedido itemReal = 
-                new Src.Entidades.Classes_Cadastro_Madeireira.ItemPedido(
-                    item.getProduto(), 
-                    item.getQuantidade()
-                );
-            novoPedido.adicionarItem(itemReal);
+            novoPedido.adicionarItem(item); // Agora usa diretamente ItemPedido externo
         }
         
         novoPedido.finalizarPedido();
@@ -254,47 +240,7 @@ public class GerenciadorPedidos {
                          "CNPJ: " + cliente.getDocumentoFormatado());
     }
 
-    private void exibirResumoPedido() {
-        System.out.println("\n=== RESUMO DO PEDIDO ===");
-        System.out.println("+--------+---------------------+------------+------------+----------+-----------+");
-        System.out.println("| Código | Produto             | Cor        | Metal      | Quant.   | Subtotal  |");
-        System.out.println("+--------+---------------------+------------+------------+----------+-----------+");
-        
-        double valorTotal = 0;
-        for(ItemPedido item : carrinho) {
-            Produto p = item.getProduto();
-            double subtotal = item.getSubtotal();
-            valorTotal += subtotal;
-            
-            System.out.printf("| %6d | %-19s | %-10s | %-10s | %8d | R$%7.2f |\n",
-                p.getID(),
-                p.getNome(),
-                item.getCorSelecionada(),
-                item.getMetalSelecionado() != null ? item.getMetalSelecionado() : "-",
-                item.getQuantidade(),
-                subtotal);
-        }
-        
-        System.out.println("+--------+---------------------+------------+------------+----------+-----------+");
-        System.out.printf("| TOTAL: | %53s | R$%7.2f |\n", "", valorTotal);
-        System.out.println("+--------+---------------------+------------+------------+----------+-----------+");
-    }
-
-    // Métodos auxiliares para obter cores e metais
-    private String getCorMadeiraByIndex(int index) {
-        String[] cores = {"cobalto", "branco", "basalto-cinza", "amadeirado", "preto", "rosê", "avermelhado"};
-        return cores[index];
-    }
-    
-    private String getCorFerragemByIndex(int index) {
-        String[] cores = {"prata", "dourado", "preto", "prata", "cinza"};
-        return cores[index];
-    }
-    
-    private String getMetalByIndex(int index) {
-        String[] metais = {"Aço", "Ferro", "Alumínio", "Latão", "Aço Inox"};
-        return metais[index];
-    }
+    // ... (métodos auxiliares getCorMadeiraByIndex, getCorFerragemByIndex, getMetalByIndex mantidos)
 
     public void cancelarPedido() {
         List<Pedido> pedidosAtivos = new ArrayList<>();
@@ -345,7 +291,7 @@ public class GerenciadorPedidos {
             if (!pedido.getStatus().toString().equals("CANCELADO")) {
                 System.out.println(pedido.toString());
                 System.out.println("Itens do pedido:");
-                for (Src.Entidades.Classes_Cadastro_Madeireira.ItemPedido item : pedido.getItens()) {
+                for (ItemPedido item : pedido.getItens()) {
                     System.out.printf("- %s (Qtd: %d) - R$%.2f\n",
                         item.getProduto().getNome(),
                         item.getQuantidade(),
@@ -359,6 +305,22 @@ public class GerenciadorPedidos {
         if (!encontrados) {
             System.out.println("Nenhum pedido ativo registrado.");
         }
+    }
+
+    // Métodos auxiliares para obter cores e metais (mantidos)
+    private String getCorMadeiraByIndex(int index) {
+        String[] cores = {"cobalto", "branco", "basalto-cinza", "amadeirado", "preto", "rosê", "avermelhado"};
+        return cores[index];
+    }
+    
+    private String getCorFerragemByIndex(int index) {
+        String[] cores = {"prata", "dourado", "preto", "prata", "cinza"};
+        return cores[index];
+    }
+    
+    private String getMetalByIndex(int index) {
+        String[] metais = {"Aço", "Ferro", "Alumínio", "Latão", "Aço Inox"};
+        return metais[index];
     }
 }
 

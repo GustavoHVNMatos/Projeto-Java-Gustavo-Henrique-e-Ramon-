@@ -35,9 +35,10 @@ public class Pedido {
     }
 
     private void calcularTotal() {
-        valorTotal = itens.stream()
-                         .mapToDouble(ItemPedido::getSubtotal)
-                         .sum();
+        valorTotal = 0.0;
+        for (ItemPedido item : itens) {
+        valorTotal += item.getSubtotal();
+        }
     }
 
     public void finalizarPedido() {
